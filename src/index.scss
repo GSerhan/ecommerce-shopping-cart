@@ -1,0 +1,51 @@
+html {
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+body,
+#root {
+  height: 100vh;
+  margin: 0;
+}
+
+header {
+  background-color: #203040;
+  color: #ffffff;
+  height: 50px;
+  font-size: 1.2rem;
+  padding: 20px;
+  position: sticky;
+  top:0;
+  z-index: 10;
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+}
+
+main {
+  overflow-y: scroll;
+  height: calc(100vh - 90px);
+  .content {
+    .main {
+      width: 80%;
+      .product {
+        padding: 10px;
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+        img{
+          max-width: 250px;
+        }
+    }
+  }
+}
+
+footer {
+  background-color: #203040;
+  color: #ffffff;
+  bottom: 0;
+  height: 40px;
+}
