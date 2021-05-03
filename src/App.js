@@ -1,6 +1,7 @@
 import React from "react";
 import data from "./data.json";
 import Products from "./components/Products.jsx"
+import Filter from "./components/Filter";
 
 class App extends React.Component {
 
@@ -22,6 +23,7 @@ class App extends React.Component {
               <main>
                   <div className="content d-flex">
                       <div className="main">
+                          <Filter count={this.state.products.length} />
                           <Products
                               products={this.state.products}
                          />

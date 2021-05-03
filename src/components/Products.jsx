@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import dress1 from '../images/dress1.jpeg'
 import formatCurrency from "../util";
 
-export default class Products extends Component {
+export default class Products extends React.Component {
     render() {
 
         return (
