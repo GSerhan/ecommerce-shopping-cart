@@ -1,5 +1,5 @@
 import React from 'react';
-import dress1 from '../images/dress1.jpeg'
+import dress1 from '../images/dress1.jpg';
 import formatCurrency from "../util";
 
 export default class Products extends React.Component {
@@ -12,7 +12,7 @@ export default class Products extends React.Component {
                         <div className="product" key={product._id}>
                             <div>
                                 <a href={"#" + product._id}>
-                                    <img src={dress1} alt={product.title}></img>
+                                    <img src={`../images/${product.image}`} alt={product.title}></img>
                                     <p>{product.title}</p>
                                 </a>
                             </div>
