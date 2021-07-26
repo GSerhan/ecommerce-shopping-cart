@@ -1,5 +1,4 @@
 import React from 'react';
-import dress1 from '../images/dress1.jpg';
 import formatCurrency from "../util";
 
 export default class Products extends React.Component {
