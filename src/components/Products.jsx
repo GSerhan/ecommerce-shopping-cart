@@ -1,19 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import formatCurrency from "../util";
-import {fetchProducts} from "../actions/productActions";
-import { useEffect } from 'react';
+import {addToCart} from "../actions/cartActions";
+import { useDispatch } from 'react-redux';
 
-const Products = (props) => {
 
-    console.log('props', props);
+const Products = props => {
+
     const products = props.products;
-
-    // const products = useSelector(state => state.products.products);
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(fetchProducts())
-    // }, [dispatch]);
+    const dispatch = useDispatch() 
 
         return (
             <div>
@@ -30,7 +24,7 @@ const Products = (props) => {
                                 </div>
                                 <div className="product-price d-flex align-items-center justify-content-between">
                                     <div>{formatCurrency(product.price)}</div>
-                                    <button onClick={() => this.props.addToCart(product)} className="btn-primary">Add to Cart</button>
+                                    <button onClick={() => dispatch(addToCart(product))} className="btn-primary">Add to Cart</button>
                                 </div>
                             </div>
                         )}

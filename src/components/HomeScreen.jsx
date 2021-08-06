@@ -1,145 +1,53 @@
 import React from "react";
-import data from "../data.json";
 import Products from "./Products.jsx"
-import Filter from "./FilterClassComponent";
-import Cart from "./CartClassComponent";
-import CheckoutForm from "./CheckoutFormClassComponent";
-import { useState } from "react";
+import Filter from "./Filter";
+import Cart from "./Cart";
+import CheckoutForm from "./CheckoutForm";
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {fetchProducts} from "../actions/productActions";
+import { Modal, Button } from "react-bootstrap";
+import formatCurrency from '../util';
 
 
 const HomeScreen = () => {
 
-    // constructor() {
-    //     super();
-    //     this.state = {
-    //         products: data.products,
-    //         cartProducts: [],
-    //         size:"",
-    //         sort:"",
-    //         sizeOptions: [],
-    //         showCheckoutForm: false,
-    //         formData: {
-    //                 email: "",
-    //                 name: "",
-    //                 adress: ""
-    //             }
-    //         }
-    // }
+    const [showCheckoutForm, setCheckoutForm] = useState(false);
+    const [showOrder, setOrder] = useState(false);
 
-    const products = useSelector(state => state.products.products);
+    const products = useSelector(state => state.productsStore.filteredProducts);
+    const productsAll = useSelector(state => state.productsStore.products);
+    const size = useSelector(state => state.selectedSize);
+    const sort = useSelector(state => state.selectedSort);
+    const sizeOptions = useSelector(state => state.productsStore.sizeOptions);
+    const cartProducts = useSelector(state => state.cartStore.cartProducts);
+    const formData = useSelector(state => state.orderStore.formData);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(fetchProducts())
     }, [dispatch]);
 
-    // const extractSizeOption = () => {
-    //     const arrayWithOptions = [];
-    //     let finallArray = [];
-    //     this.state.products.forEach(element => element.availableSizes.forEach(size => arrayWithOptions.push(size.toUpperCase())));
-    //     finallArray = [...new Set(arrayWithOptions)]
-    //     finallArray.push('ALL');
-    //     this.setState({size: finallArray.sort()[0], sizeOptions: finallArray.sort()});
-    // }
+    const calculateTotal = () => {
+        return formatCurrency(cartProducts.reduce((accumulator,currentValue) => {
+            return accumulator + (currentValue.price * currentValue.count)
+        }, 0))
+    }
 
+    const showCheckoutFormMethod = () => {
+        setCheckoutForm(true);
+    }
 
-    // handleFilterProducts = (event) => {
-    //     let size = event.target.value;
-    //     let newProducts = [];
-    //     if(size === 'ALL') {
-    //         newProducts = data.products;
-    //     } else {
-    //         newProducts = data.products.filter(product => product.availableSizes.indexOf(event.target.value) >= 0);
-    //     }
-    //     this.setState({
-    //         size, 
-    //         products: newProducts
-    //     });
-    // }
+    const showOrderMethod = () => {
+        setOrder(true);
+    }
 
-    // handleSortProducts = (event) => {
-    //     let sort = event.target.value;
-    //     let sortedProducts = data.products.sort((a, b) => {
-    //         if(sort === 'lowest') {
-    //             return parseInt(a.price) - parseInt(b.price);
-    //         } else if(sort === 'highest') {
-    //             return parseInt(b.price) - parseInt(a.price);
-    //         } else {
-    //             if(a._id.toUpperCase() > b._id.toUpperCase()) {
-    //                 return 1
-    //             } else if (a._id.toUpperCase() < b._id.toUpperCase()) {
-    //                 return -1
-    //             } else {
-    //                 return 0
-    //             }
-    //         }
-    //     })
-    //     this.setState({
-    //         sort,
-    //         products: sortedProducts
-    //     })
-    // }
+    const closeModal = () => {
+        setOrder(false);
+    }
 
-    // handleAddToCart = (selectedProduct) => {
-    //     const cartProductsLocal = [...this.state.cartProducts];
-    //     let alreadyInCart = false;
-    //     cartProductsLocal.forEach(item => {
-    //         if(item._id === selectedProduct._id) {
-    //             item.count++;
-    //             alreadyInCart = true;
-    //         } 
-    //     })
-    //     if(!alreadyInCart) {
-    //         cartProductsLocal.push({...selectedProduct, count: 1});
-    //     }
-    //     this.setState({cartProducts: cartProductsLocal})
-    //     localStorage.setItem('cartProducts', JSON.stringify(cartProductsLocal));
-    // }
-
-    // handleRemoveFromCart = (selectedProduct) => {
-
-    //     const duplicateCartProducts = [...this.state.cartProducts];
-
-    //     const selectedProductObject = this.state.cartProducts.find(item => item._id === selectedProduct._id);
-
-    //     if(selectedProductObject.count > 1) {
-    //         selectedProductObject.count = selectedProductObject.count - 1;
-    //     } else {
-    //         duplicateCartProducts.splice(duplicateCartProducts.indexOf(selectedProductObject), 1);
-    //     }
-
-    //     this.setState({cartProducts: duplicateCartProducts})
-    //     localStorage.setItem('cartProducts', JSON.stringify(duplicateCartProducts));
-
-    // }
-
-    // handleCheckout = () => {
-    //     this.setState({showCheckoutForm: true});
-    // }
-
-    // handleChangeForm = (event) => {
-    //     this.setState(prevState =>({
-    //         formData: {
-    //             ...prevState.formData,
-    //             [event.target.name]: event.target.value
-    //         }
-    //     }))
-    // }
-
-    // handleFormSubmit = (event) => {
-    //     event.preventDefault();
-    // }
     
-    // componentDidMount() {
-    //     this.extractSizeOption();
-    //     if(localStorage.getItem('cartProducts')) {
-    //         this.setState({cartProducts: JSON.parse(localStorage.getItem('cartProducts'))})
-    //     } else {
-    //         this.setState({cartProducts: []})
-    //     }
-    // }
+
 
     return (
         <div className="grid-container">
@@ -148,31 +56,52 @@ const HomeScreen = () => {
             </header>
             <main>
                 <div className="content d-flex">
+                    <Modal show={showOrder} onHide={closeModal}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Order details</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p><strong>Email:</strong> {formData.email}</p>
+                            <p><strong>Name:</strong> {formData.name}</p>
+                            <p><strong>Adress:</strong> {formData.adress}</p>
+                            <h4>Products:</h4>
+                            <ul>
+                                {cartProducts.map((item, index) => 
+                                <li key={index}>
+                                    {item.count} x <span>{item.title}</span>
+                                </li>
+                            )}
+                            </ul>
+                            <p><strong>Total:</strong>{calculateTotal()}</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={closeModal}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
                     <div className="col-8 main">
-                        {/* <Filter 
-                        count={this.state.products.length}
-                        size={this.state.size}
-                        sort={this.state.sort}
-                        sizeOptions={this.state.sizeOptions}
-                        filterProducts={this.handleFilterProducts}
-                        sortProducts={this.handleSortProducts} /> */}
+                        <Filter 
+                            count={products.length}
+                            allProducts={productsAll}
+                            products={products}
+                            size={size}
+                            sort={sort}
+                            sizeOptions={sizeOptions}
+                        />
                         <Products
                             products={products}
-                            // addToCart={this.handleAddToCart}
+                            cartProducts={cartProducts}
                         />
                     </div>
                     <div className="col-4 sidebar">
-                        {/* <Cart 
-                        cartProducts={this.state.cartProducts}
-                        removeFromCart={this.handleRemoveFromCart}
-                        proceedToCheckout={this.handleCheckout}
+                        <Cart
+                            showCheckoutFormMethod={showCheckoutFormMethod}
+                            sendTotalToParent={calculateTotal} 
+                            cartProducts={cartProducts}
                         />
-                        {this.state.showCheckoutForm && 
+                        {showCheckoutForm && cartProducts.length &&
                         <CheckoutForm 
-                        formData={this.state.formData}
-                        submitData={this.handleFormSubmit}
-                        formChange={this.handleChangeForm}
-                        />} */}
+                            showOrderMethod={showOrderMethod}
+                        />}
                     </div>
                 </div>
             </main>

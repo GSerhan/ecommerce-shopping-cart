@@ -1,1 +1,15 @@
+
+
+// products page types
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FILTER_PRODUCTS_BY_SIZE = "FILTER_PRODUCTS_BY_SIZE";
+export const ORDER_PRODUCTS_BY_PRICE = "ORDER_PRODUCTS_BY_PRICE";
+export const EXTRACT_SIZE_OPTIONS = "EXTRACT_SIZE_OPTIONS";
+
+// cart types
+export const ADD_TO_CART = "ADD_TO_CART";
+export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
+export const FETCH_CART_PRODUCTS = "FETCH_CART_PRODUCTS";
+
+// order types
+export const UPDATE_CHECKOUT_DATA = "UPDATE_CHECKOUT_DATA";
