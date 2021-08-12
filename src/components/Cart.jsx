@@ -5,16 +5,12 @@ import { useEffect } from 'react';
 import { fetchCartProducts, removeFromCart } from '../actions/cartActions';
 
 const Cart = props => {
-
-
     const cartProducts = useSelector(state => state.cartStore.cartProducts);
     const dispatch = useDispatch();
-
 
     const remove = item => {
         dispatch(removeFromCart(item));
     }
-    
     useEffect(() => {
         dispatch(fetchCartProducts())
     }, [dispatch])

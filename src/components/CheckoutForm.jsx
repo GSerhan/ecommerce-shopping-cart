@@ -5,7 +5,6 @@ import { updateCheckoutData } from '../actions/orderActions';
 const CheckoutForm = props => {
 
     const dispatch = useDispatch();
-   
     const [formData, setFormData] = useState({
         formData: {
             email: '',
@@ -13,7 +12,6 @@ const CheckoutForm = props => {
             adress: '',
         }
     });
-
     const updateForm = event => {
         setFormData(prevState => ({
             formData: {
@@ -22,7 +20,6 @@ const CheckoutForm = props => {
             }
         }));
     }
-
     const sendFormData = (event) => {
         event.preventDefault()
         dispatch(updateCheckoutData(formData));

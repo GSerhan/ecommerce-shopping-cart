@@ -33,21 +33,15 @@ const HomeScreen = () => {
             return accumulator + (currentValue.price * currentValue.count)
         }, 0))
     }
-
     const showCheckoutFormMethod = () => {
         setCheckoutForm(true);
     }
-
     const showOrderMethod = () => {
         setOrder(true);
     }
-
     const closeModal = () => {
         setOrder(false);
     }
-
-    
-
 
     return (
         <div className="grid-container">
