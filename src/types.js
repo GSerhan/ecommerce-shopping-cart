@@ -13,3 +13,6 @@ export const FETCH_CART_PRODUCTS = "FETCH_CART_PRODUCTS";
 
 // order types
 export const UPDATE_CHECKOUT_DATA = "UPDATE_CHECKOUT_DATA";
+export const CREATE_ORDER = "CREATE_ORDER";
+export const CLEAR_CART = "CLEAR_CART";
+export const CLEAR_ORDER = "CLEAR_ORDER";
