@@ -16,22 +16,25 @@ mongoose.connect("mongodb://localhost/react-shopping-cart-db", {
 const Order = mongoose.model(
     "order", 
     new mongoose.Schema({ 
-    _id: {
-        type: String,
-        default: shortid.generate
+        _id: {
+            type: String,
+            default: shortid.generate
+        },
+        email: String,
+        name: String,
+        address: String,
+        total: String,
+        cartItems: [{
+            _id: String, 
+            title: String, 
+            price: Number,
+            count: Number,
+        }],
     },
-    email: String,
-    name: String,
-    address: String,
-    total: String,
-    cartItems: [{
-        _id: String, 
-        title: String, 
-        price: Number,
-        count: Number,
-    }],
-    timestamps: true
-})
+    {
+        timestamps: true,
+    }
+)
 );
 
 const Product = mongoose.model(
@@ -46,16 +49,15 @@ const Product = mongoose.model(
     })
 );
 
-app.post("/api/orders", async(req, res) => {
+app.post("/api/orders", async (req, res) => {
     if(!req.body.name ||
       !req.body.email ||
-      !req.body.adress ||
-      !req.body.total ||
-      !req.body.cartItems) {
+      !req.body.adress) {
           return res.send({message: "Data is required."});
       }
-      const order = await Order(req.body).save();
-      res.send(order);
+    //   const order = await Order(req.body).save();
+    const order = req.body;
+    res.send(order);
 })
 
 app.get("/api/products", async (req, res) => {

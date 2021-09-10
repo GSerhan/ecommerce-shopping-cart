@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCheckoutData } from '../actions/orderActions';
+import {createOrder } from '../actions/orderActions';
 
 const CheckoutForm = props => {
 
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        formData: {
             email: '',
             name: '',
             adress: '',
-        }
     });
     const updateForm = event => {
         setFormData(prevState => ({
-            formData: {
-                ...prevState.formData,
-                [event.target.name]: event.target.value
-            }
+            ...prevState,
+            [event.target.name]: event.target.value
         }));
     }
     const sendFormData = (event) => {
-        event.preventDefault()
-        dispatch(updateCheckoutData(formData));
-        props.showOrderMethod();
+        event.preventDefault();
+        if(formData.name && formData.email && formData.adress) {
+            dispatch(createOrder(formData));
+            props.showOrderMethod();
+        } else { 
+            alert('Data is required.')
+        }
     }
     return (
         <div>

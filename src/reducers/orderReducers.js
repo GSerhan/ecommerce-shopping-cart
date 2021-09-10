@@ -1,4 +1,4 @@
-import { UPDATE_CHECKOUT_DATA, CREATE_ORDER, CLEAR_ORDER } from "../types";
+import {CREATE_ORDER, CLEAR_ORDER } from "../types";
 
 let initialState = {
     formData: {
@@ -6,20 +6,17 @@ let initialState = {
         name: '',
         adress: ''
     },
-    order: null
 }
 
 export const orderReducer = (state = initialState, action) => {
         switch(action.type) {
-            case UPDATE_CHECKOUT_DATA:
-                return {
-                    ...state,
-                    formData: action.payload
-                }
             case CREATE_ORDER: 
-                return { order: action.payload }  
+                return { 
+                    ...state, 
+                    formData: action.payload 
+                }  
             case CLEAR_ORDER:
-                return { order: null }      
+                return { formData: {} }      
             default:
                 return state;
         }

@@ -1,29 +1,26 @@
-import { UPDATE_CHECKOUT_DATA, CREATE_ORDER, CLEAR_CART, CLEAR_ORDER } from "../types";
+import {CREATE_ORDER, CLEAR_ORDER } from "../types";
 
-export const updateCheckoutData = (data) => {
-    return {
-        type: UPDATE_CHECKOUT_DATA,
-        payload: data.formData
-    }
-}
 
-export const createOrder = order => dispatch => { 
+export const createOrder = order => dispatch => {
     fetch("/api/orders", { 
         method: "POST",
         headers: { 
             "Content-Type": "application/json",
         },
         body: JSON.stringify(order),
-    }).then(response => response.json()
-    ).then(data => { 
-        dispatch({
-            type: CREATE_ORDER, 
-            payload: data
-        })
-        localStorage.clear('cartProducts');
-        dispatch({
-            type: CLEAR_CART
-        })
+    }).then(response => 
+            response.json()
+    ).then(data => {
+        if(!data.message) { 
+            dispatch({
+                type: CREATE_ORDER, 
+                payload: data
+            })
+            localStorage.clear('cartProducts');
+        } else { 
+            alert(data.message);
+        }
+        
     })
 }
 

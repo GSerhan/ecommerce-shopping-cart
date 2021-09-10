@@ -6,6 +6,8 @@ import CheckoutForm from "./CheckoutForm";
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {fetchProducts} from "../actions/productActions";
+import {clearOrder} from "../actions/orderActions";
+import {clearCart} from "../actions/cartActions";
 import { Modal, Button } from "react-bootstrap";
 import formatCurrency from '../util';
 
@@ -40,6 +42,8 @@ const HomeScreen = () => {
         setOrder(true);
     }
     const closeModal = () => {
+        dispatch(clearOrder());
+        dispatch(clearCart());
         setOrder(false);
     }
 
@@ -50,7 +54,7 @@ const HomeScreen = () => {
             </header>
             <main>
                 <div className="content d-flex">
-                    <Modal show={showOrder} onHide={closeModal}>
+                    <Modal show={showOrder} onHide={closeModal} animation={false}>
                         <Modal.Header closeButton>
                             <Modal.Title>Order details</Modal.Title>
                         </Modal.Header>
@@ -92,6 +96,7 @@ const HomeScreen = () => {
                             sendTotalToParent={calculateTotal} 
                             cartProducts={cartProducts}
                         />
+                        
                         {showCheckoutForm && cartProducts.length &&
                         <CheckoutForm 
                             showOrderMethod={showOrderMethod}
